@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Usage: ./nmap_scan.sh <target>
+TARGET=$1
+
+if [ -z "$TARGET" ]; then
+    echo "Usage: $0 <target>"
+    exit 1
+fi
+
+echo "Scanning $TARGET..."
+nmap -sS -sV -O -p- "$TARGET"
