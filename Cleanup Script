@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "Cleaning up logs..."
+
+# Example cleanup commands
+rm -rf /var/log/*
+rm -rf ~/.bash_history
+echo "Cleanup completed."
