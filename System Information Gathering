@@ -1,0 +1,21 @@
+#!/bin/bash
+
+echo "Collecting system information..."
+
+echo "Hostname:"
+hostname
+
+echo "Operating System:"
+uname -a
+
+echo "Users:"
+who
+
+echo "Network Interfaces:"
+ip a
+
+echo "Routing Table:"
+route -n
+
+echo "Open Ports:"
+netstat -tuln
