@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Usage: ./dns_enum.sh <domain>
+DOMAIN=$1
+
+if [ -z "$DOMAIN" ]; then
+    echo "Usage: $0 <domain>"
+    exit 1
+fi
+
+echo "Performing DNS enumeration for $DOMAIN..."
+dig "$DOMAIN" ANY +short
+dig ns "$DOMAIN" +short
+dig mx "$DOMAIN" +short
