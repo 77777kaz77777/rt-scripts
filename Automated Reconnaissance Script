@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Usage: ./recon.sh <target>
+TARGET=$1
+
+if [ -z "$TARGET" ]; then
+    echo "Usage: $0 <target>"
+    exit 1
+fi
+
+echo "Starting reconnaissance on $TARGET..."
+
+# DNS Enumeration
+echo "Performing DNS enumeration..."
+dig "$TARGET" ANY +short
+dig ns "$TARGET" +short
+dig mx "$TARGET" +short
+
+# WHOIS Lookup
+echo "Performing WHOIS lookup..."
+whois "$TARGET"
+
+# Port Scanning
+echo "Scanning for open ports..."
+nmap -p- "$TARGET" -oN "${TARGET}_ports.txt"
+
+echo "Reconnaissance completed. Results saved to ${TARGET}_ports.txt."
