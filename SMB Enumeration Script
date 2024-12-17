@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Usage: ./smb_enum.sh <target>
+TARGET=$1
+
+if [ -z "$TARGET" ]; then
+    echo "Usage: $0 <target>"
+    exit 1
+fi
+
+echo "Enumerating SMB shares on $TARGET..."
+smbclient -L "$TARGET" -N
