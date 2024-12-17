@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Usage: ./reverse_shell_listener.sh <port>
+PORT=$1
+
+if [ -z "$PORT" ]; then
+    echo "Usage: $0 <port>"
+    exit 1
+fi
+
+echo "Listening for reverse shells on port $PORT..."
+nc -lvnp "$PORT"
