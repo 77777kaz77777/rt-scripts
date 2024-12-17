@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Usage: ./phishing_campaign.sh <recipient_email> <template_file>
+RECIPIENT=$1
+TEMPLATE_FILE=$2
+
+if [ -z "$RECIPIENT" ] || [ -z "$TEMPLATE_FILE" ]; then
+    echo "Usage: $0 <recipient_email> <template_file>"
+    exit 1
+fi
+
+echo "Sending phishing email to $RECIPIENT..."
+
+# Send the email using the specified template ```bash
+mail -s "Important Update" "$RECIPIENT" < "$TEMPLATE_FILE"
+echo "Phishing email sent to $RECIPIENT."
