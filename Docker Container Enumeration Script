@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "Enumerating running Docker containers..."
+
+# List running containers
+docker ps -a
+
+# Inspect each container
+for container in $(docker ps -q); do
+    echo "Inspecting container $container..."
+    docker inspect "$container"
+done
