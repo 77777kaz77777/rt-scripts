@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Usage: ./dir_bust.sh <url> <wordlist>
+URL=$1
+WORDLIST=$2
+
+if [ -z "$URL" ] || [ -z "$WORDLIST" ]; then
+    echo "Usage: $0 <url> <wordlist>"
+    exit 1
+fi
+
+echo "Brute-forcing directories on $URL..."
+gobuster dir -u "$URL" -w "$WORDLIST" -t 50
