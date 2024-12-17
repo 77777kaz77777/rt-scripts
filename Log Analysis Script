@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Usage: ./log_analysis.sh <log_file>
+LOG_FILE=$1
+
+if [ -z "$LOG_FILE" ]; then
+    echo "Usage: $0 <log_file>"
+    exit 1
+fi
+
+echo "Analyzing log file: $LOG_FILE..."
+
+# Search for failed login attempts
+echo "Failed login attempts:"
+grep "Failed password" "$LOG_FILE"
+
+# Search for suspicious commands
+echo "Suspicious commands:"
+grep -E "rm -rf|wget|curl" "$LOG_FILE"
