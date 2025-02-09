@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# File Integrity Checker using md5sum
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 <file1> <file2>"
+    exit 1
+fi
+
+FILE1=$1
+FILE2=$2
+
+CHECKSUM1=$(md5sum $FILE1 | awk '{ print $1 }')
+CHECKSUM2=$(md5sum $FILE2 | awk '{ print $1 }')
+
+if [ "$CHECKSUM1" = "$CHECKSUM2" ]; then
+    echo "Files are identical."
+else
+    echo "Files are different."
+fi
